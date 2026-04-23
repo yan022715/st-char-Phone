@@ -1,37 +1,65 @@
-/* 悬浮图标样式 */
-#phone-icon-trigger {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    background: #fff;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    z-index: 10000;
-    transition: transform 0.2s;
-}
-#phone-icon-trigger:hover { transform: scale(1.1); }
-
-/* 手机主容器（默认隐藏） */
+/* 容器：初始隐藏，层级最高 */
 #st-char-phone-wrapper {
+    display: none;
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
-    z-index: 20000;
-    display: none; /* 初始隐藏 */
+    top: 50px;
+    right: 20px;
+    z-index: 999999;
+    user-select: none;
 }
 
-/* 剩下的手机样式（使用之前给你发的极致iOS版样式...） */
-/* 注意：这里保留之前给你的 iPhone 框架、状态栏等所有 CSS */
+/* 手机物理外框：极致还原 */
 .iphone {
-    width: 390px; height: 844px; background: #000; border-radius: 55px; border: 12px solid #2c2c2e;
-    position: relative; overflow: hidden;
+    width: 390px;
+    height: 844px;
+    background: #000;
+    border-radius: 55px;
+    border: 12px solid #2c2c2e;
+    box-shadow: 0 0 0 2px #111, 20px 20px 60px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+    transform: scale(0.8); /* 适配屏幕高度 */
 }
-/* ...（此处省略之前的详细CSS，请保留并合并）... */
+
+/* 灵动岛 */
+.dynamic-island {
+    position: absolute;
+    top: 11px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 35px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 10001;
+}
+
+/* 微信：写实对话流 */
+.wechat-ui {
+    background: #ededed;
+}
+.wechat-header {
+    height: 88px;
+    background: rgba(237,237,237,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid #ddd;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 12px;
+    font-weight: 600;
+}
+
+/* 工行：黑金尊享感 */
+.bank-ui {
+    background: #0d0d0d;
+    color: #c9a063;
+}
+.bank-card {
+    background: linear-gradient(135deg, #2c2c2c, #000);
+    border: 0.5px solid #444;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+
+/* 应用图标：禁止 Emoji，使用高清 SVG */
+.app-icon.wechat { background-color: #07c160; background-image: url('data:image/svg+xml,...'); }
