@@ -1,7 +1,7 @@
 {
-    "name": "Char Phone Simulator",
-    "description": "沉浸式角色手机模拟器，动态读取角色设定生成手机内容。",
-    "version": "1.0.0",
+    "name": "st-char-phone",
+    "description": "沉浸式角色手机模拟器，带有悬浮球和原生API支持。",
+    "version": "1.1.0",
     "author": "Top Full-Stack Dev",
     "main": "index.js"
 }
