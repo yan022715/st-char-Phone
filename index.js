@@ -1,55 +1,82 @@
-// 引用酒馆核心 API
-import { getContext } from "../../../extensions.js";
+import { 
+    registerExtension, 
+    getContext, 
+    extension_settings 
+} from "../../../extensions.js";
+import { generateRaw } from "../../../llm.js";
 
-(function() {
-    // 1. 创建悬浮开关图标
-    function createTrigger() {
-        if ($('#phone-icon-trigger').length) return; // 防止重复创建
+const extensionName = "ios-char-phone";
+const extensionFolderPath = `scripts/extensions/${extensionName}`;
 
-        const trigger = $('<div id="phone-icon-trigger" title="查看Char手机">🍎</div>');
-        $('body').append(trigger);
+// 初始配置
+const defaultSettings = {
+    passcode: "0000",
+    lastGeneratedChar: null
+};
 
-        trigger.on('click', function() {
-            $('#st-char-phone-wrapper').fadeToggle(200); // 点击切换手机显示/隐藏
+/**
+ * 核心：向酒馆注册插件
+ */
+function init() {
+    console.log("iOS Char Phone: Initializing...");
+    
+    // 1. 注入 CSS 样式表
+    const styleLink = document.createElement('link');
+    styleLink.rel = 'stylesheet';
+    styleLink.href = `${extensionFolderPath}/style.css`;
+    document.head.appendChild(styleLink);
+
+    // 2. 加载 HTML 模板并挂载
+    fetch(`${extensionFolderPath}/index.html`)
+        .then(res => res.text())
+        .then(html => {
+            const container = document.createElement('div');
+            container.id = 'st-ios-phone-root';
+            container.innerHTML = html;
+            document.body.appendChild(container);
+            bindEvents(); // 绑定 UI 交互
         });
-    }
 
-    // 2. 加载手机 HTML 模板
-    async function loadTemplate() {
-        const response = await fetch('/scripts/extensions/st-char-phone/index.html');
-        const html = await response.text();
-        $('body').append(html);
-        
-        // 初始化手机内部的时间和图标
-        updateTime();
-        setInterval(updateTime, 1000);
-    }
+    // 3. 在酒馆顶栏添加启动按钮
+    const topBarButton = $(`
+        <div id="ios-phone-trigger" class="menu_button fa-solid fa-mobile-screen-button" title="查看角色手机"></div>
+    `);
+    $('#extensions_menu').append(topBarButton);
+    topBarButton.on('click', togglePhone);
+}
 
-    function updateTime() {
-        const now = new Date();
-        const t = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-        $('#time, #lock-time').text(t);
-    }
+// 切换显示/隐藏
+function togglePhone() {
+    const $wrapper = $('#st-char-phone-wrapper');
+    $wrapper.toggle();
+}
 
-    // 3. 等待酒馆准备就绪后再启动
-    function init() {
-        console.log("Char Phone Simulator: 启动中...");
-        createTrigger();
-        loadTemplate();
-    }
-
-    // 模仿 yexiaoxiaoye 的启动监听
-    $(document).ready(function() {
-        init();
+// 绑定手机内部的点击事件
+function bindEvents() {
+    // 锁屏逻辑、App点击、Home条逻辑
+    $(document).on('click', '.num-key', function() {
+        const val = $(this).text();
+        // ... 处理密码输入 ...
     });
+    
+    // 具体的 App 打开关闭逻辑等
+    window.openApp = (id) => { /* 之前写的逻辑 */ };
+}
 
-    // 全局函数给 HTML 调用
-    window.unlockPhone = function() {
-        $('#lock-screen').slideUp(400);
-    };
+// 调用 AI 获取 JSON 数据
+async function fetchCharPhoneData() {
+    const context = getContext();
+    const char = context.characters[context.characterId];
+    if (!char) return;
 
-    window.closePhoneApp = function() {
-        $('.window').removeClass('open').hide();
-    };
+    // 这里是参考 yexiaoxiaoye/mobile 的核心：获取当前上下文
+    const prompt = `[SYSTEM] 输出严格的 JSON 格式...（此处同前一个方案，略）`;
+    const result = await generateRaw(prompt, true);
+    // ... 解析并渲染 ...
+}
 
-})();
+// 导出注册函数给酒馆
+registerExtension({
+    name: extensionName,
+    init: init
+});
