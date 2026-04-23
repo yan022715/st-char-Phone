@@ -1,7 +1,8 @@
 {
-    "name": "Char Phone Simulator",
-    "description": "沉浸式角色手机模拟器，动态读取角色设定生成手机内容。",
-    "version": "1.0.0",
-    "author": "Top Full-Stack Dev",
+    "name": "st-char-phone",
+    "display_name": "角色查岗手机",
+    "description": "查看Char的手机秘密",
+    "version": "1.1.0",
+    "author": "Gemini & You",
     "main": "index.js"
 }
