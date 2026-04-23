@@ -1,7 +1,6 @@
 {
-    "name": "ios-char-phone",
-    "display_name": "角色手机模拟器",
-    "description": "基于原生 JS 的极致还原 iOS UI，动态读取角色数据。",
+    "name": "Char Phone Simulator",
+    "description": "沉浸式角色手机模拟器，动态读取角色设定生成手机内容。",
     "version": "1.0.0",
     "author": "Top Full-Stack Dev",
     "main": "index.js"
